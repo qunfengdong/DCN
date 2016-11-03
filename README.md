@@ -124,27 +124,31 @@ Options:
 		Show this help message and exit
 ```
 
+* The output of this step are the following: 
+1. Intermediate files named as \<Disease A\>.vs.\<Disease B\></Dis>.all.csv. You can look into the raw input file for a specific disease pair if you are interested.
+2. Survival curves PNG files named as \<Disease A\>.vs.\<Disease B\></Dis>.png.
+3. CSV file named **all.edges.csv** with the _from_ disease ID, _to_ disease ID, coefficient, exponentiated coefficient, standard error of the coefficient, z value, p-value, sample size (N), adjusted p-value, the _from_ disease name and _to_ disease name as columns. 
+
+* Example **all.edges.csv** file:
+
+| from | to | coef  | exp_coef | se_coef | z     | Pr    | N     | Pr_adjusted | from_cdc_desc | to_cdc_desc                                  | 
+|------|----|-------|----------|---------|-------|-------|-------|-------------|---------------|----------------------------------------------| 
+| 10   | 18 | 0.772 | 2.165    | 0.113   | 6.840 | 0.000 | 16064 | 8.6E-11     | Depression    | Alzheimer Disease                            | 
+| 10   | 11 | 0.277 | 1.319    | 0.034   | 8.190 | 0.000 | 15952 | 3.2E-15     | Depression    | Rheumatoid Arthritis/Osteoarthritis          | 
+| 10   | 19 | 0.706 | 2.027    | 0.075   | 9.426 | 0.000 | 16250 | 0.0E+00     | Depression    | Senile Dementia                              | 
+| 10   | 20 | 0.084 | 1.087    | 0.031   | 2.663 | 0.008 | 16032 | 2.4E-02     | Depression    | Anemia                                       | 
+| 10   | 31 | 0.112 | 1.118    | 0.048   | 2.347 | 0.019 | 16010 | 4.9E-02     | Depression    | Liver Disease                                | 
+| 10   | 28 | 0.267 | 1.306    | 0.039   | 6.894 | 0.000 | 16012 | 6.1E-11     | Depression    | Urinary Incontinence                         | 
+| 10   | 33 | 0.510 | 1.666    | 0.172   | 2.966 | 0.003 | 16184 | 1.0E-02     | Depression    | Parkinson's Disease                          | 
+| 10   | 32 | 0.132 | 1.141    | 0.050   | 2.621 | 0.009 | 15988 | 2.6E-02     | Depression    | Sleep Apnea                                  | 
+| 10   | 5  | 0.210 | 1.234    | 0.060   | 3.501 | 0.000 | 16120 | 1.8E-03     | Depression    | Chronic Obstructive Pulmonary Disease (COPD) | 
+| 10   | 9  | 0.241 | 1.273    | 0.052   | 4.620 | 0.000 | 16208 | 2.2E-05     | Depression    | Asthma                                       | 
+
+
 ### Step 3
 * Visualization with cytoscape.js.
 
-## Output
-* A CSV file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species, strain).
-* If no taxonomy annotation is available, it is listed as 'Not Available'
-
-### Example output file:
-
-| from | to | coef               | exp_coef         | se_coef            | z                | Pr                   | N     | Pr_adjusted          | from_cdc_desc | to_cdc_desc                                  | 
-|------|----|--------------------|------------------|--------------------|------------------|----------------------|-------|----------------------|---------------|----------------------------------------------| 
-| 10   | 18 | 0.772471921293428  | 2.16511162992917 | 0.112934793120933  | 6.83998172703295 | 7.92033105767587e-12 | 16064 | 8.59355919757832e-11 | Depression    | Alzheimer Disease                            | 
-| 10   | 11 | 0.277057388828638  | 1.31924207862013 | 0.0338307755002824 | 8.18950747452789 | 2.22044604925031e-16 | 15952 | 3.21224528458212e-15 | Depression    | Rheumatoid Arthritis/Osteoarthritis          | 
-| 10   | 19 | 0.706414526729088  | 2.02671149585188 | 0.0749407576526056 | 9.42630617645652 | 0                    | 16250 | 0                    | Depression    | Senile Dementia                              | 
-| 10   | 20 | 0.0835078464368838 | 1.08709374507187 | 0.0313596169960636 | 2.66291027876285 | 0.00774680666244776  | 16032 | 0.0235112873531631   | Depression    | Anemia                                       | 
-| 10   | 31 | 0.111767501241316  | 1.11825283802201 | 0.0476239027973893 | 2.34687824130707 | 0.0189314401604171   | 16010 | 0.0490846030097312   | Depression    | Liver Disease                                | 
-| 10   | 28 | 0.266936020103298  | 1.30595688867084 | 0.0387219161535401 | 6.8936676337205  | 5.43720624079924e-12 | 16012 | 6.0506346371971e-11  | Depression    | Urinary Incontinence                         | 
-| 10   | 33 | 0.510444628015953  | 1.66603179469938 | 0.172117419224065  | 2.96567674740376 | 0.0030201774719375   | 16184 | 0.0100057788001594   | Depression    | Parkinson's Disease                          | 
-| 10   | 32 | 0.132298841532258  | 1.14144938078497 | 0.0504671483452885 | 2.62148438875701 | 0.00875477718516648  | 15988 | 0.0261139058306684   | Depression    | Sleep Apnea                                  | 
-| 10   | 5  | 0.210064999380328  | 1.23375825087232 | 0.0600064275096725 | 3.50070830906352 | 0.000464023431176241 | 16120 | 0.00179809079580793  | Depression    | Chronic Obstructive Pulmonary Disease (COPD) | 
-| 10   | 9  | 0.241120268657163  | 1.27267408890795 | 0.0521925903589008 | 4.61981800479927 | 3.84076791992705e-06 | 16208 | 2.15083003515915e-05 | Depression    | Asthma                                       | 
+* Output: maybe a screen shot of the network?
 
 ## Version
 * Version 0.9 An alternative public release
