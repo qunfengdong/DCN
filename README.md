@@ -79,10 +79,10 @@ Options:
 ```
 
 ### Step 2 
-* According to the exposed population identified from the first step, matched non-exposed population will be chosen. After the non-exposed are matched with the exposed, Cox-PH regression will be performed taking age, race, gender as covariates (or any other confounding factors supplied by user), and final output is an adjacency matrix with all the adjusted significant hazard ratios, and survival curve graphs.
+* According to the exposed population identified from the first step, matched non-exposed population will be chosen. After the non-exposed are matched with the exposed, Cox-PH regression will be performed taking age, race, gender as covariates (or any other confounding factors supplied by user), and final output is an adjacency matrix with all the adjusted significant hazard ratios and survival curve graphs.
 
 ```
-$ Rscript a2_non_exposed.cox.adjust.r -i test.fasta
+$ Rscript a2_non_exposed.cox.adjust.r -i test.tsv
 ```
 
 More options are the following:
@@ -124,14 +124,27 @@ Options:
 		Show this help message and exit
 ```
 
+### Step 3
+* Visualization with cytoscape.js.
+
 ## Output
 * A CSV file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species, strain).
 * If no taxonomy annotation is available, it is listed as 'Not Available'
 
 ### Example output file:
-```
 
-```
+| from | to | coef               | exp_coef         | se_coef            | z                | Pr                   | N     | Pr_adjusted          | from_cdc_desc | to_cdc_desc                                  | 
+|------|----|--------------------|------------------|--------------------|------------------|----------------------|-------|----------------------|---------------|----------------------------------------------| 
+| 10   | 18 | 0.772471921293428  | 2.16511162992917 | 0.112934793120933  | 6.83998172703295 | 7.92033105767587e-12 | 16064 | 8.59355919757832e-11 | Depression    | Alzheimer Disease                            | 
+| 10   | 11 | 0.277057388828638  | 1.31924207862013 | 0.0338307755002824 | 8.18950747452789 | 2.22044604925031e-16 | 15952 | 3.21224528458212e-15 | Depression    | Rheumatoid Arthritis/Osteoarthritis          | 
+| 10   | 19 | 0.706414526729088  | 2.02671149585188 | 0.0749407576526056 | 9.42630617645652 | 0                    | 16250 | 0                    | Depression    | Senile Dementia                              | 
+| 10   | 20 | 0.0835078464368838 | 1.08709374507187 | 0.0313596169960636 | 2.66291027876285 | 0.00774680666244776  | 16032 | 0.0235112873531631   | Depression    | Anemia                                       | 
+| 10   | 31 | 0.111767501241316  | 1.11825283802201 | 0.0476239027973893 | 2.34687824130707 | 0.0189314401604171   | 16010 | 0.0490846030097312   | Depression    | Liver Disease                                | 
+| 10   | 28 | 0.266936020103298  | 1.30595688867084 | 0.0387219161535401 | 6.8936676337205  | 5.43720624079924e-12 | 16012 | 6.0506346371971e-11  | Depression    | Urinary Incontinence                         | 
+| 10   | 33 | 0.510444628015953  | 1.66603179469938 | 0.172117419224065  | 2.96567674740376 | 0.0030201774719375   | 16184 | 0.0100057788001594   | Depression    | Parkinson's Disease                          | 
+| 10   | 32 | 0.132298841532258  | 1.14144938078497 | 0.0504671483452885 | 2.62148438875701 | 0.00875477718516648  | 15988 | 0.0261139058306684   | Depression    | Sleep Apnea                                  | 
+| 10   | 5  | 0.210064999380328  | 1.23375825087232 | 0.0600064275096725 | 3.50070830906352 | 0.000464023431176241 | 16120 | 0.00179809079580793  | Depression    | Chronic Obstructive Pulmonary Disease (COPD) | 
+| 10   | 9  | 0.241120268657163  | 1.27267408890795 | 0.0521925903589008 | 4.61981800479927 | 3.84076791992705e-06 | 16208 | 2.15083003515915e-05 | Depression    | Asthma                                       | 
 
 ## Version
 * Version 0.9 An alternative public release
