@@ -19,8 +19,11 @@ $ git clone https://github.com/qunfengdong/EMR_network.git
 After the github repository is cloned, you will find a folder named EMR_network. All the scripts and example data files will be included in it. 
 
 ## Quick start
-
-This suite of analysis include four major parts, 1). Find all the exposed disease pairs; 2). Find all matched non-exposed disease pairs; 3). Perform Cox-PH regression on the two cohorts; 4). Visualize the results.
+This suite of analysis include four major parts:
+1. Find all the exposed disease pairs; 
+2. Find all matched non-exposed disease pairs; 
+3. Perform Cox-PH regression on the two cohorts; 
+4. Visualize the results.
 
 ### Input file
 * Before running any analysis using this pipeline, please make sure you have an input EMR file formatted as tab delimited with 6 columns in the order of patient ID, disease ID/name, disease diagnose date ([%Y-%m-%d] or [%Y/%m/%d]), age, gender, race. No header is needed. It should be something like the following:
@@ -45,7 +48,7 @@ This suite of analysis include four major parts, 1). Find all the exposed diseas
 
 ### Step 1
 * Find all the exposed disease pairs. Intermediate files with \<Disease A\>.vs.\<Disease B\></Dis>.csv will be outputted for each pair.
-```
+```R
 $ Rscript a1_exposure.r -i test.tsv
 ```
 More options available:
