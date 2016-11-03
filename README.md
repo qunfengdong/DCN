@@ -125,6 +125,7 @@ Options:
 ```
 
 * The output of this step are the following: 
+
 1. Intermediate files named as \<Disease A\>.vs.\<Disease B\></Dis>.all.csv. You can look into the raw input file for a specific disease pair if you are interested.
 2. Survival curves PNG files named as \<Disease A\>.vs.\<Disease B\></Dis>.png.
 3. CSV file named **all.edges.csv** with the _from_ disease ID, _to_ disease ID, coefficient, exponentiated coefficient, standard error of the coefficient, z value, p-value, sample size (N), adjusted p-value, the _from_ disease name and _to_ disease name as columns. 
@@ -148,7 +149,7 @@ Options:
 ### Step 3
 * Visualization with cytoscape.js.
 
-* Output: maybe a screen shot of the network?
+* A screen shot of final network display.
 ![alt text][display]
 [display]: https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png "Example Network Display"
 
