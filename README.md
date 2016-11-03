@@ -149,6 +149,8 @@ Options:
 * Visualization with cytoscape.js.
 
 * Output: maybe a screen shot of the network?
+![alt text][display]
+[display]: https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png "Example Network Display"
 
 ## Version
 * Version 0.9 An alternative public release
