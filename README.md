@@ -86,6 +86,7 @@ $ Rscript a2_non_exposed.cox.adjust.r -i test.tsv
 ```
 
 More options are the following:
+
 ```
 $ Rscript a2_non_exposed.cox.adjust.r -h
 doParallel    foreach     OIsurv   optparse 
@@ -126,11 +127,12 @@ Options:
 
 * The output of this step are the following: 
 
-1. Intermediate files named as &lt;Disease A\>.vs.&lt;Disease B\>.all.csv. You can look into the raw input file for a specific disease pair if you are interested.
-2. Survival curves PNG files named as &lt;Disease A\>.vs.&lt;Disease B\>.png.
+1. Intermediate files named as &lt;Disease A&gt;.vs.&lt;Disease B&gt;.all.csv. You can look into the raw input file for a specific disease pair if you are interested.
+2. Survival curves PNG files named as &lt;Disease A&gt;.vs.&lt;Disease B&gt;.png.
 3. CSV file named **all.edges.csv** with the _from_ disease ID, _to_ disease ID, coefficient, exponentiated coefficient, standard error of the coefficient, z value, p-value, sample size (N), adjusted p-value, the _from_ disease name and _to_ disease name as columns. 
 
 * Example **all.edges.csv** file:
+
 
 | from | to | coef  | exp_coef | se_coef | z     | Pr    | N     | Pr_adjusted | from_cdc_desc | to_cdc_desc                                  | 
 |------|----|-------|----------|---------|-------|-------|-------|-------------|---------------|----------------------------------------------| 
