@@ -126,8 +126,8 @@ Options:
 
 * The output of this step are the following: 
 
-1. Intermediate files named as \<Disease A\>.vs.\<Disease B\></Dis>.all.csv. You can look into the raw input file for a specific disease pair if you are interested.
-2. Survival curves PNG files named as \<Disease A\>.vs.\<Disease B\></Dis>.png.
+1. Intermediate files named as \<Disease A\>.vs.\<Disease B\>.all.csv. You can look into the raw input file for a specific disease pair if you are interested.
+2. Survival curves PNG files named as \<Disease A\>.vs.\<Disease B\>.png.
 3. CSV file named **all.edges.csv** with the _from_ disease ID, _to_ disease ID, coefficient, exponentiated coefficient, standard error of the coefficient, z value, p-value, sample size (N), adjusted p-value, the _from_ disease name and _to_ disease name as columns. 
 
 * Example **all.edges.csv** file:
@@ -157,10 +157,10 @@ Options:
 * Version 0.9 An alternative public release
 
 ## Authors
+
+* Huaiying Lin. M.S., algorithm development, program coding and testing
 * Dr. Xiang Gao, theoretical conception and algorithm development
 * Dr. Qunfeng Dong, algorithm development
-* Huaiying Lin, program coding and testing
-* Kashi Revanna, program coding and package development
 
 ## Error report
 
