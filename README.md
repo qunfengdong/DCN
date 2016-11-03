@@ -4,6 +4,7 @@ EMR Network Analyser is a pipeline of disease correlation analysis with retrospe
 
 ## Prerequisities
 
+* Linux
 * R >= 3.3.0
 
 ## Citation
@@ -12,7 +13,7 @@ In press. Will update when accepted.
 
 ## Install
 
-To check out the source code, go to https://github.com/qunfengdong/EMR_network.git. To obtain the scripts and example fasta files, do the following:
+To check out the source code, go to https://github.com/qunfengdong/EMR_network. To obtain the scripts and example EMR files, do the following:
 
 ```shell
 $ git clone https://github.com/qunfengdong/EMR_network.git
@@ -52,8 +53,8 @@ This suite of analysis include four major parts:
 ## Getting started
 
 ### Step 1
-* Find all the exposed disease pairs. Intermediate files with \<Disease A\>.vs.\<Disease B\></Dis>.csv will be outputted for each pair.
-```R
+* Find all the exposed disease pairs. Intermediate files with \<Disease A\>.vs.\<Disease B\></Dis>.csv will be outputted for each pair. This step completes the first part of this pipeline.
+```
 $ Rscript a1_exposure.r -i test.tsv
 ```
 More options available:
@@ -76,72 +77,64 @@ Options:
 	-h, --help
 		Show this help message and exit
 ```
-During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, taxdmp.zip, and taxdb.tar.gz will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.taxID.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca.py as the database. And an environmental variable called BLASTDB has to be set up manually. There will be instruction at the end of this script to let you know what shell command you should run to set it up. **If you login to a new shell, this environmental variable has to be set up again before running the analysis.**
-
-```
-export BLASTDB=/location/of/taxdb.bti/and/taxdb.btd/
-```
-
-Normally, it should be located in the ./db/ directory.
 
 ### Step 2 
-* Run your analysis with the compiled database. Please run:
+* According to the exposed population identified from the first step, matched non-exposed population will be chosen. After the non-exposed are matched with the exposed, Cox-PH regression will be performed taking age, race, gender as covariates (or any other confounding factors supplied by user), and final output is an adjacency matrix with all the adjusted significant hazard ratios, and survival curve graphs.
+
 ```
-$ python 2.blca.py -i test.fasta
+$ Rscript a2_non_exposed.cox.adjust.r -i test.fasta
 ```
-If you are running your analysis somewhere else other than in the BLCA_script directory, please do the following:
-```
-$ python /location/to/2.blca.py -i test.fasta -r /location/to/your/database/16SMicrobial.taxID.taxonomy
-```
+
 More options are the following:
 ```
-$ python 2.blca.py -h
+$ Rscript a2_non_exposed.cox.adjust.r -h
+doParallel    foreach     OIsurv   optparse 
+      TRUE       TRUE       TRUE       TRUE 
+Usage: Rscript a2_non_exposed.cox.adjust.r -i <filename> [options]
 
-<< Bayesian-based LCA taxonomic classification method >>
+This R script will find the matching non-exposed population for all diesease pairs appearing in the output file from last step with some criteria, such as the matching patient should have the same gender and race as the exposed subject. After the non-exposed are matched with the exposed, Cox-PH regression will be performed taking age, race, gender as covariates (or any other confounding factors supplied by user), and final output is an adjacency matrix with all the adjusted significant hazard ratios, and survival curve graphs.
 
-   Please make sure the following softwares are in your PATH:
-	1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
-	2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-	3.Biopython should be installed locally.
+Options:
+	-i CHARACTER, --infile=CHARACTER
+		Input file name [required]
+		Should be tab delimited with 6 columns in the order of patient_ID, Disease, Disease_Date ([%Y-%m-%d] or [%Y/%m/%d]), Age, Gender, Race. No header is needed. You could provide more information about the patient (additional columns), but only the measurement at disease A will be recorded. And these/this additional variable(s) will be used as covariate during Cox-PH regression, but won't be used as matching criteria
 
-Usage: python 2.blca.py -i <fasta file> [option]
+	-o CHARACTER, --outfile=CHARACTER
+		Adjacency matrix output file name, default is all.edges.csv
 
+	-m CHARACTER, --metafile=CHARACTER
+		Meta file for each disease name. First column is the disease ID used in the input file column Disease, all the other column should be additional attribute of the disease, tab separated. Header is needed
 
-Arguments:
- - Required:
-	-i		Input fasta file.
- - Taxonomy Profiling Options [filtering of hits]:
-	-n		Number of times to bootstrap. Default: 100
-	-t		Extra number of nucleotides to include at the beginning and end of the hits. Default: 10
-	-d		Proportion of hits to include from top hit. Default: 0.1 [0-1]
-	-e		Minimum evalue to include for blastn. Default: 0.1
-	-a		Minimum bitscore to include for blastn hits. Default: 100
-	-c		Minimum coverage to include. Default: 0.95 [0-1]
-	-b		Minimum identity score to include. Default: 95 [0-100]
-	-r		Reference Taxonomy file for the Database. Default: db/16SMicrobial.taxID.taxonomy
-	-q		Refernece blast database. Default: db/16SMicrobial
-	-o		Output file name. Default: <fasta>.blca.out
- - Alignment Options:
-	-m		Alignment match score. Default: 1
-	-f		Alignment mismatch penalty. Default: -2.5
-	-g		Alignment gap penalty. Default: -2
- - Other:
-	-h		Show program usage and quit
+	-a CHARACTER, --adjust=CHARACTER
+		Method of adjusting p-values, choices are holm, hochberg, hommel, bonferroni, BY, and fdr. The default is BH
+
+	-s DOUBLE, --sigcut=DOUBLE
+		Significant P-value cutoff. Only p-values that are less than this cutoff will be considered as significant P-values, and kept in the adjacency matrix. Default is 0.05
+
+	-y INTEGER, --year=INTEGER
+		Age difference between exposed and non-exposed, default is 5 years
+
+	-d INTEGER, --days=INTEGER
+		Visit date difference between exposed and non-exposed, unit days, default is 7 days
+
+	-p INTEGER, --processors=INTEGER
+		Number of cores/CPUs to use, default is 8
+
+	-h, --help
+		Show this help message and exit
 ```
 
 ## Output
-* A text file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species, strain).
+* A CSV file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species, strain).
 * If no taxonomy annotation is available, it is listed as 'Not Available'
 
 ### Example output file:
 ```
-Read1      superkingdom:Bacteria;100.0;phylum:Proteobacteria;100.0;class:Gammaproteobacteria;100.0;order:Enterobacterales;100.0;family:Enterobacteriaceae;100.0;genus:Lelliottia;100.0;species:Lelliottia nimipressuralis;100.0;strain:Lelliottia nimipressuralis;100.0;
-Read2     superkingdom:Bacteria;100.0;phylum:Bacteroidetes;100.0;class:Cytophagia;100.0;order:Cytophagales;100.0;family:Cytophagaceae;100.0;genus:Runella;100.0;species:Runella slithyformis;100.0;strain:Runella slithyformis DSM 19594;97.5;
-Read3      superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacteria;100.0;order:Streptomycetales;100.0;family:Streptomycetaceae;100.0;genus:Streptomyces;100.0;species:Streptomyces echinatus;100.0;strain:Streptomyces echinatus;50.0;
+
 ```
 
 ## Version
-* Version 1.2 An alternative public release
+* Version 0.9 An alternative public release
 
 ## Authors
 * Dr. Xiang Gao, theoretical conception and algorithm development
