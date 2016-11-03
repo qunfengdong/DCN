@@ -20,37 +20,53 @@ After the github repository is cloned, you will find a folder named EMR_network.
 
 ## Quick start
 
-We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_tax.py_. After the database is built and stored on your local machine, you will supply the loction of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca.py_, then you will get a blca output as test.fasta.blca.out.
+This suite of analysis include four major parts, 1). Find all the exposed disease pairs; 2). Find all matched non-exposed disease pairs; 3). Perform Cox-PH regression on the two cohorts; 4). Visualize the results.
+
+### Input file
+* Before running any analysis using this pipeline, please make sure you have an input EMR file formatted as tab delimited with 6 columns in the order of patient ID, disease ID/name, disease diagnose date ([%Y-%m-%d] or [%Y/%m/%d]), age, gender, race. No header is needed. It should be something like the following:
+
+```
+67      17      2012-10-15      74      F       White
+128     17      2014-05-11      24      F       White
+138     9       2008-08-23      7       M       White
+144     7       2008-05-22      73      F       White
+144     8       2008-07-11      73      F       White
+144     1       2008-07-25      73      F       White
+144     25      2011-05-05      76      F       White
+148     10      2008-11-30      97      F       White
+148     19      2008-11-30      97      F       White
+148     20      2008-11-30      97      F       White
+148     2       2009-01-19      97      F       White
+```
+
+* If you have a seperate file containing the acutual name of each disease, you could supply it in the scripts, and the output would show the disease name instead of disease ID.
 
 ## Getting started
 
 ### Step 1
-* To compile, subset the 16S Microbial database, and setup the environmental variable BLASTDB. Please run:
+* Find all the exposed disease pairs. Intermediate files with \<Disease A\>.vs.\<Disease B\></Dis>.csv will be outputted for each pair.
 ```
-$ python 1.subset_db_tax.py
+$ Rscript a1_exposure.r -i test.tsv
 ```
 More options available:
 ```
-$ python 1.subset_db_tax.py -h
+$ Rscript a1_exposure.r -h
+doParallel    foreach   optparse 
+      TRUE       TRUE       TRUE 
+Usage: Rscript a1_exposure.r -i <filename> [options]
 
-<< Bayesian-based LCA taxonomic classification method >>
+This R script will find the exposure population for all diesease pairs appearing in the input file that satisfy disease A -> disease B, and outputs CSV files of selected exposed patients for each pair of disease combinations. The output from this step will be the input for next step.
 
-   Please make sure the following softwares are in your PATH:
-	1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
-	2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-	3.Biopython is installed locally.
+Options:
+	-i CHARACTER, --infile=CHARACTER
+		Input file name [required]. 
+		Should be tab delimited with 6 columns in the order of patient_ID, Disease, Disease_Date ([%Y-%m-%d] or [%Y/%m/%d]), Age, Gender, Race. No header is needed. You could provide more information about the patient (additional columns), but only the measurement at disease A will be recorded
 
-   This is the utility script to format 16S Microbial Database from NCBI before running the BLCA taxonomy profiling. This could be used for other subsets of NCBI formatted database for blast too.
+	-p INTEGER, --processors=INTEGER
+		Number of cores/CPUs to use, default is 8
 
-Usage: python 1.subset_db_tax.py
-
-Arguments:
- - Optional:
-	-d		The database link that you want to download from and format. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/16SMicrobial.tar.gz.
-	-t		The taxonomy database link from NCBI. Default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip.
-	-u		The taxdb from NCBI. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz 
- - Other:
-	-h		Show program usage and quit
+	-h, --help
+		Show this help message and exit
 ```
 During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, taxdmp.zip, and taxdb.tar.gz will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.taxID.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca.py as the database. And an environmental variable called BLASTDB has to be set up manually. There will be instruction at the end of this script to let you know what shell command you should run to set it up. **If you login to a new shell, this environmental variable has to be set up again before running the analysis.**
 
