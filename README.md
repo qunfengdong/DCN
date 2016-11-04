@@ -145,8 +145,8 @@ Options:
 
 * Example survial curve:
 
-![alt text][display]
-[display]: https://github.com/yingeddi2008/scratch/blob/master/4_1.png "Example survival curve graph"
+![alt text1][display]
+[display]: https://github.com/yingeddi2008/scratch/blob/master/4_7.png "Example survival curve graph"
 
 * Example **all.edges.csv** file (This won't match the result after you run the test.tsv):
 
@@ -170,7 +170,7 @@ Options:
 
 * A screen shot of final network display.
 
-![alt text][display]
+![alt text2][display]
 [display]: https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png "Example Network Display"
 
 ## Version
