@@ -145,7 +145,7 @@ Options:
 
 * Example survial curve:
 
-<a href="https://github.com/yingeddi2008/scratch/blob/master/4_7.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/4_7.png"/></a>
+<a href="https://github.com/yingeddi2008/scratch/blob/master/4_7.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/4_7.png" alt="example of survival curve" align="middle" width="350"/></a>
 
 * Example **all.edges.csv** file (This won't match the result after you run the test.tsv):
 
@@ -167,9 +167,9 @@ Options:
 ### Step 3
 * Visualization with cytoscape.js.
 
-* A screen shot of final network display.
+* A screenshot of final network display.
 
-<a href="https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png"/></a>
+<a href="https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png" alt="Screenshot of network disply"/></a>
 
 ## Version
 * Version 0.9 
