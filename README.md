@@ -125,7 +125,7 @@ Options:
 		Show this help message and exit
 ```
 
-* Example of meta file:
+* Meta file should be tab separated with header. The first column is the disease ID (should be consistant with the disease ID you have in the EMR file), and second column is the disease name. Example of meta file:
 
 | ID | Name          | 
 |----|---------------| 
