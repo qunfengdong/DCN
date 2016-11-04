@@ -143,9 +143,7 @@ Options:
 2. Survival curves PNG files named as &lt;Disease A&gt;.vs.&lt;Disease B&gt;.png.
 3. CSV file named **all.edges.csv** with the _from_ disease ID, _to_ disease ID, coefficient, exponentiated coefficient, standard error of the coefficient, z value, p-value, sample size (N), adjusted p-value, the _from_ disease name and _to_ disease name as columns. **If you do not supply a meta file when running, the _from_ disease name and _to_ disease name won't appear in the all.edges.csv.**
 
-* Example survial curve:
-
-<a href="https://github.com/yingeddi2008/scratch/blob/master/4_7.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/4_7.png" alt="example of survival curve" align="middle" width="350"/></a>
+* Example survial curve: <a href="https://github.com/yingeddi2008/scratch/blob/master/4_7.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/4_7.png" alt="example of survival curve" align="middle" width="450"/></a>
 
 * Example **all.edges.csv** file (This won't match the result after you run the test.tsv):
 
