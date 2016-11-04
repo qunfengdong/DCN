@@ -146,7 +146,7 @@ Options:
 * Example survial curve:
 
 ![alt text][display]
-[display]: https://github.com/yingeddi2008/scratch/blob/master/4_7.png "Example survival curve graph"
+[display]: https://github.com/yingeddi2008/scratch/blob/master/4_1.png "Example survival curve graph"
 
 * Example **all.edges.csv** file (This won't match the result after you run the test.tsv):
 
