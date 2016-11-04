@@ -53,7 +53,7 @@ This suite of analysis include four major parts:
 ## Getting started
 
 ### Step 1
-* Find all the exposed disease pairs. Intermediate files with \<Disease A\>.vs.\<Disease B\></Dis>.csv will be outputted for each pair. This step completes the first part of this pipeline.
+* Find all the exposed disease pairs. Intermediate files with \<Disease A\>.vs.\<Disease B\></Dis>.csv will be outputted for each disease pair. Those intermediate files are required for next step. **Do not remove them**. This step completes the first part of this pipeline.
 ```
 $ Rscript a1_exposure.r -i test.tsv
 ```
@@ -79,7 +79,7 @@ Options:
 ```
 
 ### Step 2 
-* According to the exposed population identified from the first step, matched non-exposed population will be chosen. After the non-exposed are matched with the exposed, Cox-PH regression will be performed taking age, race, gender as covariates (or any other confounding factors supplied by user), and final output is an adjacency matrix with all the adjusted significant hazard ratios and survival curve graphs.
+* According to the exposed population identified from the first step (In each of the CSV file), matched non-exposed population will be chosen. After the non-exposed are matched with the exposed, Cox-PH regression will be performed taking age, race, gender as covariates (or any other confounding factors supplied by user), and final output is an adjacency matrix with all the adjusted significant hazard ratios and survival curve graphs. This script completes the second and third parts of this pipeline.
 
 ```
 $ Rscript a2_non_exposed.cox.adjust.r -i test.tsv
