@@ -82,7 +82,7 @@ Options:
 * According to the exposed population identified from the first step (In each of the CSV file), matched non-exposed population will be chosen. After the non-exposed are matched with the exposed, Cox-PH regression will be performed taking age, race, gender as covariates (or any other confounding factors supplied by user), and final output is an adjacency matrix with all the adjusted significant hazard ratios and survival curve graphs. This script completes the second and third parts of this pipeline.
 
 ```
-$ Rscript a2_non_exposed.cox.adjust.r -i test.tsv
+$ Rscript a2_non_exposed.cox.adjust.r -i test.tsv -m test.meta.tsv
 ```
 
 More options are the following:
@@ -125,16 +125,33 @@ Options:
 		Show this help message and exit
 ```
 
+* Example of meta file:
+
+| ID | Name          | 
+|----|---------------| 
+| 1  | Heart Failure | 
+| 3  | Liver cancer  | 
+| 4  | Diabetes      | 
+| 5  | COPD          | 
+| 7  | Hypertension  | 
+| 9  | Allergy       | 
+| 10 | Depression    | 
+
 * The output of this step are the following: 
 
-1. Intermediate files named as &lt;Disease A&gt;.vs.&lt;Disease B&gt;.all.csv. You can look into the raw input file for a specific disease pair if you are interested.
+1. Intermediate files named as &lt;Disease A&gt;.vs.&lt;Disease B&gt;.all.csv. You can look into the raw input file for a specific disease pair of your interest.
 2. Survival curves PNG files named as &lt;Disease A&gt;.vs.&lt;Disease B&gt;.png.
-3. CSV file named **all.edges.csv** with the _from_ disease ID, _to_ disease ID, coefficient, exponentiated coefficient, standard error of the coefficient, z value, p-value, sample size (N), adjusted p-value, the _from_ disease name and _to_ disease name as columns. 
+3. CSV file named **all.edges.csv** with the _from_ disease ID, _to_ disease ID, coefficient, exponentiated coefficient, standard error of the coefficient, z value, p-value, sample size (N), adjusted p-value, the _from_ disease name and _to_ disease name as columns. **If you do not supply a meta file when running, the _from_ disease name and _to_ disease name won't appear in the all.edges.csv.**
 
-* Example **all.edges.csv** file:
+* Example survial curve:
+
+![alt text][display]
+[display]: https://github.com/yingeddi2008/scratch/blob/master/4_7.png "Example survival curve graph"
+
+* Example **all.edges.csv** file (This won't match the result after you run the test.tsv):
 
 
-| from | to | coef  | exp_coef | se_coef | z     | Pr    | N     | Pr_adjusted | from_cdc_desc | to_cdc_desc                                  | 
+| from | to | coef  | exp_coef | se_coef | z     | Pr    | N     | Pr_adjusted | from_Name | to_Name                                  | 
 |------|----|-------|----------|---------|-------|-------|-------|-------------|---------------|----------------------------------------------| 
 | 10   | 18 | 0.772 | 2.165    | 0.113   | 6.840 | 0.000 | 16064 | 8.6E-11     | Depression    | Alzheimer Disease                            | 
 | 10   | 11 | 0.277 | 1.319    | 0.034   | 8.190 | 0.000 | 15952 | 3.2E-15     | Depression    | Rheumatoid Arthritis/Osteoarthritis          | 
