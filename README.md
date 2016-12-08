@@ -165,7 +165,13 @@ Options:
 
 
 ### Step 3
-* Visualization with cytoscape.js.
+* Visualization with cytoscape.js. The output from step 2 needs to be formatted into a json object before viewing.
+
+```
+$ python a3_parse.py
+```
+
+Then just click-open the index.html, you will see the network as shown similar to the following.
 
 * A screenshot of final network display.
 
