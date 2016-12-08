@@ -82,7 +82,7 @@ Options:
 * According to the exposed population identified from the first step (In each of the CSV file), matched non-exposed population will be chosen. After the non-exposed are matched with the exposed, Cox-PH regression will be performed taking age, race, gender as covariates (or any other confounding factors supplied by user), and final output is an adjacency matrix with all the adjusted significant hazard ratios and survival curve graphs. This script completes the second and third parts of this pipeline.
 
 ```
-$ Rscript a2_non_exposed.cox.adjust.r -i test.tsv -m test.meta.tsv
+$ Rscript a2_non_exposed.cox.adjust.r -i test.tsv -m cdcid.tsv
 ```
 
 More options are the following:
