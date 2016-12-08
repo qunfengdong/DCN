@@ -69,7 +69,8 @@ pcount <- table(raw$V1)
 raw <- raw[raw$V1 %in% names(pcount)[pcount > 1],]
 
 ##### Find all Files #####
-files <- Sys.glob("*.vs.*[^(case)|^(control)|^(all)].csv")
+# files <- Sys.glob("*.vs.*[^(case)|^(control)|^(all)].csv")
+files <- Sys.glob("*.vs.*.csv")
 
 idx <- data.frame(t(sapply(strsplit(files,"\\."),function(x) x[c(1,3)])))
 idx <- data.frame(sapply(idx,function(x) as.numeric(as.vector(x))))
@@ -190,7 +191,7 @@ foreach (f = 1:nrow(idx)) %dopar% {
     cat("Processing ",f,"/",nrow(idx),": ",idx$file[f],"\n",sep="")
     file.remove(idx$out[f])
     file.remove(idx$clean[f])
-    # file.remove(idx$all[f])
+    file.remove(idx$all[f])
   }
   file.remove(idx$file[f])
 }
