@@ -175,7 +175,7 @@ Then just click-open the index.html, you will see the network as shown similar t
 
 * A screenshot of final network display.
 
-<a href="https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png" alt="Screenshot of network disply"/></a>
+<a href="https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/EMR_network.PNG" alt="Screenshot of network disply"/></a>
 
 ## Version
 * Version 0.9 
