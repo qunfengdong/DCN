@@ -150,7 +150,8 @@ $(window).on('load', function() {
 		node_target = cy.$('#' + edge_target).select();
 		//console.log(node_source.data('name'));
 		getimage(this.id());
-		getpvalue(node_source.data('name'), node_target.data('name'), this.data('valuePrAdjusted'));
+		//getpvalue(node_source.data('name'), node_target.data('name'), this.data('valuePrAdjusted'), this.data('pHRtest'));
+        getpvalue(node_source.data('name'), node_target.data('name'), this.data('valuePrAdjusted'));
 	});
 
 	cy.on('tap', function(e){
@@ -170,9 +171,10 @@ function update_table(){
 	});
 }
 
-function getpvalue(source, target, pvalue){
+function getpvalue(source, target, pvalue,HR_p){
 	//console.log(v);
-	$('#showpvalue').html('<strong>Source node:</strong> '+ source +'<br><strong>Target node:</strong> ' + target + '<br><strong>P-value:</strong> ' + pvalue);
+	//$('#showpvalue').html('<strong>Source node:</strong> '+ source +'<br><strong>Target node:</strong> ' + target + '<br><strong>P-value:</strong> ' + pvalue +  '<br><strong>Hazard Ratio Test P-value</strong> ' + HR_p);
+    $('#showpvalue').html('<strong>Source node:</strong> '+ source +'<br><strong>Target node:</strong> ' + target + '<br><strong>P-value:</strong> ' + pvalue);
 }
 
 function getdegree(name, indegree, outdegree){
