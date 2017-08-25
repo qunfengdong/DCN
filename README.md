@@ -231,7 +231,7 @@ $ Rscript a3_RFopt.r -i 509.vs.23.csv --graph
 randomForestSRC        survival        optparse        reshape2         ggplot2 
            TRUE            TRUE            TRUE            TRUE            TRUE 
 
-\>>Test Result:
+>>Test Result:
                     Wil_p
 startpoint   0.000000e+00
 quantile1st 2.279294e-189
@@ -240,6 +240,10 @@ quantile3rd 1.868302e-171
 endpoint    5.879868e-196
 random      1.593307e-167
 ```
+
+* Example survial curve: 
+
+<a href="https://github.com/yingeddi2008/scratch/blob/master/509.vs.23.RFsurv.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/509.vs.23.RFsurv.png" alt="example of RF survival curve" style="float: right" width="450"/></a>
 
 More options:
 
