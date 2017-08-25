@@ -26,7 +26,7 @@ option_list = list(
   make_option(c("-n", "--ntree"), type="integer", default=1000, 
               help="Number of trees to run random forest, default is 1000", metavar="integer"),
   make_option(c("-t", "--timepoint"),type="character",default="all",
-              help="Timepoint(s) to run Wilcoxon rank sum test on, default is all. Possible choices: startpoint, quantile1st, median, quantile3rd, endpoint, random, or all to run test on all 6 timepoints. You can choose more than one, separated by comma without space.",metavar = "character"),
+              help="Timepoint(s) to run Wilcoxon rank sum test on, default is all. Possible choices: quantile1st, median, quantile3rd, endpoint, random, or all to run test on all 5 timepoints. You can choose more than one, separated by comma without space.",metavar = "character"),
   make_option(c("--graph"),default=FALSE,action ="store_true",
               help="Draw a simple TimePoint vs. Survival Curve for each individual based on RF estimattion. Default is false")
   
@@ -54,7 +54,7 @@ if (!is.integer(opt$ntree)){
   stop("The number of trees is not integer, please correct!\n", call.=FALSE)
 }
 
-timeChoice <- c("startpoint", "quantile1st", "median", "quantile3rd", "endpoint","random","all")
+timeChoice <- c("quantile1st", "median", "quantile3rd", "endpoint","random","all")
 
 tps <- strsplit(opt$timepoint,",")[[1]]
 
@@ -84,9 +84,9 @@ formula <- paste(c(basic_formula, colnames(dat)[-(1:8)]), collapse=" + ")
 rfsmod <- rfsrc(as.formula(formula), data = dat, ntree = opt$ntree, tree.err=TRUE)
 suvtab <- data.frame(rfsmod$survival)
 qua <- quantile(1:ncol(suvtab))
-colnames(suvtab)[qua] <- timeChoice[1:5]
+colnames(suvtab)[qua] <- timeChoice[1:4]
 ran <- seq(1,ncol(suvtab))[!seq(1,ncol(suvtab)) %in% qua]
-colnames(suvtab)[sample(ran,1)] <- timeChoice[6]
+colnames(suvtab)[sample(ran,1)] <- timeChoice[5]
 tsttab <- suvtab[,tps,drop=F]
 
 if (opt$graph){
