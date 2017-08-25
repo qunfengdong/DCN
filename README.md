@@ -24,7 +24,7 @@ After the github repository is cloned, you will find a folder named EMR_network.
 
 ## Quick start
 
-This suite of analysis include four major parts:
+* This suite of analysis includes four major parts:
 
 1. Find all the exposed disease pairs; 
 2. Find all matched non-exposed disease pairs; 
@@ -32,7 +32,7 @@ This suite of analysis include four major parts:
 4. Visualize the results;
 5. Optional: Validate a certain disease pair using Random Forest survival analysis.
 
-Step 1-3 is achieved by a1_runEMR.r, step 4 is achieved by a2_parse.py and index.html, step 5 is achieved by a3_RFopt.r.
+* Step 1-3 is achieved by a1_runEMR.r, step 4 is achieved by a2_parse.py and index.html, step 5 is achieved by a3_RFopt.r.
 
 ### Required input files
 
@@ -80,10 +80,10 @@ $ tar zxvf test.tar.gz
 
 1. View the example input file: cdc_first_test.tsv
 2. View the example meta file: disease_code_test.tsv
-3. View the intermediate time table: \<DiseaseA\>.vs.\<DiseasB\>.csv
-4. View the survival curves of significant disease pairs based on Cox-PH regression: \<DiseaseA\>_\<DiseasB\>.png
+3. View the intermediate time table: \<DiseaseA\>.vs.\<DiseaseB\>.csv
+4. View the survival curves of significant disease pairs based on Cox-PH regression: \<DiseaseA\>_\<DiseasBe\>.png
 5. Click on the index.html to view the result from example data.
-6. View the survival curves of significant disease pairs based on Random Forest survival analysis: \<DiseaseA\>.vs.\<DiseasB\>.RFsurv.png
+6. View the survival curves of significant disease pairs based on Random Forest survival analysis: \<DiseaseA\>.vs.\<DiseaseB\>.RFsurv.png
 
 * Note: If you re-run the tutorial, all present files will be overwritten. If you want to compare your results to the provided example results, please save the files 3-6 in a newly created folder.
 
@@ -217,16 +217,67 @@ $ python a2_parse.py <output file: all.edges.csv from a1_runEMR.r>
 
 <a href="https://github.com/yingeddi2008/scratch/blob/master/EMR_display.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/EMR_network.PNG" alt="Screenshot of network disply"/></a>
 
-### Step 3
-* Visualization with cytoscape.js. The output from step 2 needs to be formatted into a json object before viewing.
+### Step 3: (optional) a3_RFopt.r
+* Validate Cox-PH regression results with Randome Forest survival analysis. Wilcoxon rank sum test will be used to test the different estimated survival probability between exposed and non-exposed group on 6 different timepoints. This procedure could take up to 30 minutes. It is recommended to run as background programme.
 
 ```
-$ python a3_parse.py
+$ Rscript a3_RFopt.r -i 509.vs.23.csv --graph
+
+ randomForestSRC 2.5.0 
+ 
+ Type rfsrc.news() to see new features, changes, and bug fixes. 
+ 
+
+randomForestSRC        survival        optparse        reshape2         ggplot2 
+           TRUE            TRUE            TRUE            TRUE            TRUE 
+
+\>>Test Result:
+                    Wil_p
+startpoint   0.000000e+00
+quantile1st 2.279294e-189
+median      3.588911e-205
+quantile3rd 1.868302e-171
+endpoint    5.879868e-196
+random      1.593307e-167
+```
+
+More options:
+
+```
+$ Rscript a3_RFopt.r -h
+
+ randomForestSRC 2.5.0 
+ 
+ Type rfsrc.news() to see new features, changes, and bug fixes. 
+ 
+
+randomForestSRC        survival        optparse        reshape2         ggplot2 
+           TRUE            TRUE            TRUE            TRUE            TRUE 
+Usage: Rscript a3_RFopt.r -i <filename> [options]
+
+This R script will run a validation analysis on the selected disease pair using Random Forest survival analysis. Wilcoxon rank sum test will be used to test the different between exposed and non-exposed group on 6 different timepoints.
+
+Options:
+	-i CHARACTER, --infile=CHARACTER
+		Input file name [required]. 
+		Should be an intermediate file from a1_runEMR.r
+
+	-n INTEGER, --ntree=INTEGER
+		Number of trees to run random forest, default is 1000
+
+	-t CHARACTER, --timepoint=CHARACTER
+		Timepoint(s) to run Wilcoxon rank sum test on, default is all. Possible choices: startpoint, quantile1st, median, quantile3rd, endpoint, random, or all to run test on all 6 timepoints. You can choose more than one, separated by comma without space.
+
+	--graph
+		Draw a simple TimePoint vs. Survival Curve for each individual based on RF estimattion. Default is false
+
+	-h, --help
+		Show this help message and exit
 ```
 
 
 ## Version
-* Version 0.9 
+* Version 1.2 
 
 ## Authors
 
