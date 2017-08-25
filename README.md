@@ -70,11 +70,22 @@ P00020  14      2012-05-25      65      F       African American
 | 63     | D063      |
 | 67     | D067      |
 
-* A test dataset with those two files are availabe in test.tar.gz file. Please unzip it to view.
+### Test dataset
+
+* A test dataset with those two files are availabe in test.tar.gz file. Please unzip it to view and go through the tutorial.
 
 ```
 $ tar zxvf test.tar.gz
 ```
+
+1. View the example input file: cdc_first_test.tsv
+2. View the example meta file: disease_code_test.tsv
+3. View the intermediate time table: \<DiseaseA\>.vs.\<DiseasB\>.csv
+4. View the survival curves of significant disease pairs based on Cox-PH regression: \<DiseaseA\>_\<DiseasB\>.png
+5. Click on the index.html to view the result from example data.
+6. View the survival curves of significant disease pairs based on Random Forest survival analysis: \<DiseaseA\>.vs.\<DiseasB\>.RFsurv.png
+
+* Note: If you re-run the tutorial, all present files will be overwritten. If you want to compare your results to the provided example results, please save the files 3-6 in a newly created folder.
 
 ## Getting started
 
@@ -148,7 +159,7 @@ Options:
 ```
 
 * Output: 
-1. all.edges.csv: adjacency matrix.
+1. all.edges.csv \[default name\]: adjacency matrix.
 2. Survival curve graphs if tested significant.
 3. (Optional) Time table for each disease pair.
 
@@ -173,7 +184,7 @@ Options:
 
 * Example survial curve: 
 
-<a href="https://github.com/yingeddi2008/scratch/blob/master/4_23.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/4_23.png" alt="example of survival curve" style="float: right" width="450"/></a>
+<a href="https://github.com/yingeddi2008/scratch/blob/master/14_23.png"><img src="https://github.com/yingeddi2008/scratch/blob/master/14_23.png" alt="example of survival curve" style="float: right" width="450"/></a>
 
 * Example time table:
 
