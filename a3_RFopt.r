@@ -26,7 +26,7 @@ option_list = list(
   make_option(c("-n", "--ntree"), type="integer", default=1000, 
               help="Number of trees to run random forest, default is 1000", metavar="integer"),
   make_option(c("-t", "--timepoint"),type="character",default="all",
-              help="Timepoint(s) to run Wilcoxon rank sum test on, default is all. Possible choices: quantile1st, median, quantile3rd, endpoint, random, or all to run test on all 5 timepoints. You can choose more than one, separated by comma without space.",metavar = "character"),
+              help="Timepoint(s) to run Wilcoxon rank sum test on, default is all. Possible choices: quantile1st, median, quantile3rd, endpoint, random, or all to run test on all 5 time points. You can choose more than one, separated by comma without space.",metavar = "character"),
   make_option(c("--graph"),default=FALSE,action ="store_true",
               help="Draw a simple TimePoint vs. Survival Curve for each individual based on RF estimattion. Default is false")
   
