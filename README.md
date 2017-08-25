@@ -2,6 +2,8 @@ Electronic Medical Record (EMR) Network Analyser
 ------------------------------------------------
 EMR Network Analyser is a pipeline of disease correlation analysis with retrospective matched cohort study design using Cox Proportional Hazards (Cox-PH) regression in combination of interactive network display using graph theory. It allows clinicians to explore the relationships between any statistically disease pairs easily by studying the network with customized filtering, rearranging the network and calculating all the possible path between disease pairs. 
 
+## Not Ready for Public Use Yet!
+
 ## Prerequisities
 
 * Linux
