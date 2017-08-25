@@ -235,7 +235,6 @@ randomForestSRC        survival        optparse        reshape2         ggplot2
 
 >>Test Result:
                     Wil_p
-startpoint   0.000000e+00
 quantile1st 2.279294e-189
 median      3.588911e-205
 quantile3rd 1.868302e-171
@@ -272,7 +271,7 @@ Options:
 		Number of trees to run random forest, default is 1000
 
 	-t CHARACTER, --timepoint=CHARACTER
-		Timepoint(s) to run Wilcoxon rank sum test on, default is all. Possible choices: startpoint, quantile1st, median, quantile3rd, endpoint, random, or all to run test on all 6 timepoints. You can choose more than one, separated by comma without space.
+		Timepoint(s) to run Wilcoxon rank sum test on, default is all. Possible choices: quantile1st, median, quantile3rd, endpoint, random, or all to run test on all 5 time points. You can choose more than one, separated by comma without space.
 
 	--graph
 		Draw a simple TimePoint vs. Survival Curve for each individual based on RF estimattion. Default is false
