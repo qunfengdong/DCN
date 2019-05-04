@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Network</title>
+<style>
+#cy {
+	height: 800px;
+	width: 1000px;
+  display: block;
+  border: 1px solid black;
+}
+body {
+  padding-top: 0;
+}
+#showpvalue {
+	font-size: small;
+}
+
+</style>
+<link rel="stylesheet" href="asset/css/bootstrap.min.css">
+<link rel="stylesheet" href="asset/css/bootstrap-slider.css">
+<link rel="stylesheet" type="text/css" href="asset/css/jquery.dataTables.min.css"/>
+
+<script src="all.edges.csv.js"></script>
+<script src="asset/js/jquery-3.1.1.min.js"></script> 
+<script src="asset/js/cytoscape.min.js"></script> 
+<script src="asset/js/bootstrap.min.js"></script>  
+<script src="asset/js/bootstrap-slider.js"></script>
+<script type="text/javascript" src="asset/js/jquery.dataTables.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+
+function getnodes(){
+	var fromoptions = $("#fromnode");
+	var tooptions = $("#tonode");
+	fromoptions.append($("<option />").val('').text('From ...').attr({'disabled': 'disabled', 'selected': 'selected', 'hidden': 'hidden'}));
+	tooptions.append($("<option />").val('').text('To ...').attr({'disabled': 'disabled', 'selected': 'selected', 'hidden': 'hidden'}));
+	
+	function sort_func(o1, o2) {
+		var name1 = o1.data.name
+		var name2 = o2.data.name
+		name1 = name1 != null ? name1.toLowerCase() : null
+		name2 = name2 != null ? name2.toLowerCase() : null
+		return name1 > name2 ? 1 : name1 < name2 ? -1 : 0;
+	}
+	jsonobj.sort(sort_func);
+	
+	$.each(jsonobj, function(ind, val){
+		if(val.data.name != null){
+			//console.log(val.data.name);
+			fromoptions.append($("<option />").val(val.data.id).text(val.data.name));
+			tooptions.append($("<option />").val(val.data.id).text(val.data.name));
+		}
+		//console.log(val.data.valueN);
+		if(val.data.valueN < valuePrMin){
+			valuePrMin = val.data.valueN
+		}
+		if(val.data.valueN > valuePrMax){
+			valuePrMax = val.data.valueN
+		}
+	});
+	//console.log(valuePrMin, valuePrMax);
+	//$('#ex1').attr('data-slider-min', valuePrMin);
+	$('#valueN_min_val').html(valuePrMin);
+	//$('#ex1').attr('data-slider-max', valuePrMax);
+	$('#valueN_max_val').html(valuePrMax);
+	//console.log(val);
+}
+var cy = null;
+var valuePrMin = 1000000000;
+var valuePrMax = 0;
+
+function setupSlider(){
+	$('#ex1').slider({
+		reversed: true,
+		tooltip: 'always',
+		formatter: function(value) {
+			return value;
+		}
+	});
+	$('#ex2').slider({
+		tooltip: 'always',
+		formatter: function(value) {
+			return value;
+		}
+	});
+}
+
+$(window).on('load', function() {
+	getnodes();
+	setupSlider();
+	cy = cytoscape({
+
+  container: document.getElementById('cy'), // container to render in
+
+  elements: jsonobj,
+
+  layout: {
+    name: 'random',
+    directed: true
+  },
+  style: cytoscape.stylesheet()
+  	.selector('node')
+  		.css({
+  			'content': 'data(name)',
+  			'width': 'data(count)',
+  			'height': 'data(count)',
+  			'font-size': '11px',
+  			'text-valign': 'center',
+  			'text-halign': 'center',
+  			'background-color': '#2768d1',
+  			'text-outline-color': 'black',
+  			'text-outline-width': '1px',
+  			'color': '#fff'
+  		})
+  	.selector(':selected')
+  		.css({
+			'border-color': '#8e17b2',
+			'background-color': '#8e17b2',
+			'text-outline-color': '#8e17b2',
+			'border-width': 3,
+			'target-arrow-color': 'black',
+			'source-arrow-color': 'black'
+		})
+	.selector('edge')
+		.css({
+			'curve-style': 'bezier',
+			'target-arrow-shape': 'triangle',
+			'target-arrow-color': '#ccc',
+			'line-color': '#ccc',
+			'width': 'data(valueexp_coef)'
+		})
+	.selector('.faded')
+		.css({
+			'opacity': 0.10,
+			'text-opacity': 0
+		})
+	.selector('.path')
+		.css({
+			'background-color': '#1bb725',
+			'line-color': '#1bb725',
+			'target-arrow-color': '#1bb725'
+		})
+	.selector('.highlight_in_node')
+		.css({
+			'border-color': '#1abfbc',
+			'background-color': '#1abfbc',
+			'border-width': 3,
+		})
+	.selector('.highlight_out_node')
+		.css({
+			'border-color': '#ce5623',
+			'background-color': '#ce5623',
+			'border-width': 3,
+		})
+	.selector('.highlight_in_path')
+		.css({
+			'line-color': '#1abfbc',
+			'target-arrow-color': '#1abfbc'
+		})
+	.selector('.highlight_out_path')
+		.css({
+			'line-color': '#ce5623',
+			'target-arrow-color': '#ce5623'
+		})
+	});
+	
+	cy.on('tap', 'node', function(e){
+		var node = e.cyTarget;
+		// console.log(node.data('name'));
+		var neighborhood = node.neighborhood();
+		var in_node = node.incomers();
+		var out_node = node.outgoers();
+		var in_edge = node.incomers('edge');
+		var out_edge = node.outgoers('edge');
+		getdegree(node.data('name'), node.indegree(), node.outdegree());
+		
+		cy.elements().removeClass('highlight_in_node');
+		cy.elements().removeClass('highlight_out_node');
+		cy.elements().removeClass('highlight_in_path');
+		cy.elements().removeClass('highlight_out_path');
+		cy.elements().addClass('faded');
+		neighborhood.removeClass('faded');
+		node.removeClass('faded');
+		in_node.addClass('highlight_in_node');
+		out_node.addClass('highlight_out_node');
+		in_edge.addClass('highlight_in_path');
+		out_edge.addClass('highlight_out_path');
+	});
+	
+	cy.on('click', 'edge', function(e){
+		edge_source = this.data('source');
+		edge_target = this.data('target');
+		//console.log(edge_source);
+		node_source = cy.$('#' + edge_source).select();
+		node_target = cy.$('#' + edge_target).select();
+		//console.log(node_source.data('name'));
+		getimage(this.id());
+		getimageurl(this.id());
+		getpvalue(node_source.data('name'), node_target.data('name'), this.data('valueN'), this.data('rawPvalue'), this.data('valueexp_coef'),this.data('valuePrAdjusted'),this.data('pHRtest'));
+	});
+
+	cy.on('tap', function(e){
+		if( e.cyTarget === cy ){
+			cy.elements().removeClass('faded');
+			cy.elements().removeClass('highlight_in_node');
+			cy.elements().removeClass('highlight_out_node');
+			cy.elements().removeClass('highlight_in_path');
+			cy.elements().removeClass('highlight_out_path');
+		}
+	});
+	
+	cy.resize();
+	// update_table();
+	update_datatable();
+});
+
+function update_table(){
+	cy.nodes().forEach(function( ele ){
+	  //console.log( ele.id() );
+	  tot = parseInt(ele.indegree()) + parseInt(ele.outdegree());
+	  $('#nodetable tr:last').after('<tr><td>'+ ele.data('name') + '</td><td>'+ ele.indegree() +'</td><td>'+ ele.outdegree() +'</td><td>'+tot.toString()+'</td></tr>');
+	});
+}
+
+function update_datatable(){
+  var table = $('#nodetable').DataTable();
+	cy.nodes().forEach(function( ele ){
+	  // console.log( ele.id() );
+	  tot = parseInt(ele.indegree()) + parseInt(ele.outdegree());
+	  table.row.add([ele.data('name'), ele.indegree(), ele.outdegree(), tot.toString()]).draw(false);
+	});
+}
+
+function getpvalue(source, target, sizeN, rawpvalue, coef, adpvalue, pHRtest){
+	console.log(rawpvalue);
+	console.log(pHRtest);
+	$('#showpvalue').html('<strong>Exposure Disease:</strong> '+ source +'<br><strong>Outcome Disease:</strong> ' + target + '<br><strong>Cohort Size:</strong> ' + sizeN +'<br><a href="#" data-toggle="tooltip" style="text-decoration:none" data-placement="bottom" title="Hazard ratio comparing exposed vs. non-exposed to get outcome disease from CoxPH regression when holding other factors constant"><strong>Exponentiated Coefficient</strong></a>: ' + coef +'<br><a href="#" style="text-decoration:none" data-toggle="tooltip" data-placement="bottom" title="Significance of association between the exposure disease and outcome disease after controlling for other confounding factors. If the p-value is smaller than the conventional 0.05 cutoff, it is deemed as statistically significant association"><strong>Raw P-value</strong></a>: ' + rawpvalue +'<br><a  href="#" data-toggle="tooltip" style="text-decoration:none" data-placement="bottom" title="Multiple test corrected p-values"><strong>Adjusted P-value</strong></a>: ' + adpvalue + '<br><a href="#" data-toggle="tooltip" data-placement="bottom" style="text-decoration:none" title="Test the proportional hazards assumption for a Cox regression model fit. If the p-value is larger than 0.95, meaning it passes the test"><strong>Hazard Ratio Test</strong></a>: ' + pHRtest + '<br>');
+}
+
+
+function getdegree(name, indegree, outdegree){
+	$('#showpvalue').html('<strong>Target Disease:</strong> '+ name +'<br><a href="#" style="text-decoration:none" data-toggle="tooltip" data-placement="bottom" title="Number of incoming diseases. Those are the diseases leading up to the target disease"><strong>In-degree:</strong></a> ' + indegree + '<br><a href="#" style="text-decoration:none" data-toggle="tooltip" data-placement="bottom" title="Number of outgoing diseases. Those are the diseases the target disease leads to"><strong>Out-degree:</strong></a> ' + outdegree);
+	$('#imgurl').empty();
+	$('#imgdiv').empty();
+}
+
+function getimage(id){
+	$('#imgdiv').empty();
+	var img = $('<img style="width:250px">');
+	img.attr('src', id + '.cox.survival.png');
+	var ahref = $('<a target="_blank">');
+	ahref.attr('href', id + '.cox.survival.png')
+	img.appendTo(ahref);
+	ahref.appendTo('#imgdiv');
+	console.log(ahref);
+}
+
+function getimageurl(id){
+	$('#imgurl').empty();
+	var href = '<br><br><p style="font-weight:bold">Additional plots:</p><ul><li><a target="_blank" href=' + id + '.cox.residual.png>CoxPH Regression Residual Plot</a></li>' + '<li><a target="_blank" href=' + id + '.dropoff.png>Patient Dropoff Distribution Plot</a></li>' + '<li><a target="_blank" href=' + id + '.rf.survival.png>Random Forest Survival Plot</a></li></ul>' 
+	$('#imgurl').append(href)
+}
+
+function shortpath(){
+	cy.reset();
+	$('#nonode').empty();
+	var fromnode = $("#fromnode option:selected").val();
+	var tonode = $("#tonode option:selected").val();
+	console.log(fromnode, tonode);
+	//var dijkstra = cy.elements().dijkstra("#10",function(){
+	var dijkstra = cy.elements().dijkstra("#" + fromnode,function(){
+    return this.data('valuePrAdjusted');
+  },true)
+	var path = dijkstra.pathTo( cy.$("#" + tonode) );
+	console.log(path.length)
+	if(path.length <= 1){
+		$('#nonode').html('<span style="color: red">No path!!!</span>');
+		return;
+	}
+	var x=0;
+  var highlightNextEle = function(){
+  	var el=path[x];
+  	
+  	if(el.isNode()){
+  		console.log(el.data('name'));
+  		$('#nonode').append("<strong>" + el.data('name') + "</strong><br>");
+  	}
+  	el.addClass('path');
+  	el.css('z-index', 10);
+  	if(x < path.length - 1){
+  		x++;
+  		if(el.isNode()){
+  			$('#nonode').append("&#8681;");
+  		} else {
+  			$('#nonode').append("(p-value: " + el.data('valuePrAdjusted') + ")<br>");
+  		}
+  		setTimeout(highlightNextEle, 500);
+  	}
+  };
+  highlightNextEle();
+	//cy.elements(pathToJ).addClass('path')
+	//console.log(b)
+	//pathToJ.addClass('path')
+}
+
+function showhidegraphold(){
+	sel = $('input[name=graph]:checked').val();
+	if(sel == "display"){
+		$('#cy').css({'display': 'block'});
+	}
+	else {
+		$('#cy').css({'display': 'none'});
+	}
+}
+
+function showhidegraph(sel){
+	//sel = $('input[name=graph]:checked').val();
+	//if(sel == "display"){
+	//console.log(sel);
+	if(sel.checked){
+		$('#cy').css({'display': 'block'});
+	}
+	else {
+		$('#cy').css({'display': 'none'});
+	}
+}
+
+function showhidetable(sel){
+	// $(this).click(function() {$('#nodetable').toggle(this.checked);});
+	if(sel.checked){
+	  $('#nodetable').show();
+	}
+	else {
+	  $('#nodetable').hide();
+	}
+}
+
+function unhideelements(){
+	cy.elements(function(i, element){
+		//console.log(element.data('id'));
+		element.show();
+	})
+}
+	
+function filterthis(){
+	unhideelements();
+	var val = $('#ex1').slider("option", "value");
+	//console.log($(val).val());
+	//var val2 = $('#ex2').slider("option", "value");
+	var cutoff_valueN_min = parseInt($('#input_valueN_min').val())
+	var cutoff_valueN_max = parseInt($('#input_valueN_max').val())
+	//var cutoff_valueN = parseInt($(val).val())
+	var cutoff_valuePrAdjusted = parseFloat($('#input_valuePrAdjusted').val())
+	//var cutoff_valuePrAdjusted = parseFloat($(val2).val())
+	var cutoff_valueexp_coef = parseFloat($('#input_valueexp_coef').val())
+	console.log(cutoff_valueN_min, cutoff_valueN_max, cutoff_valuePrAdjusted, cutoff_valueexp_coef);
+	//var collection = cy.elements("edge[valueN > " + cutoff_valueN + "][valuePrAdjusted < " + cutoff_valuePrAdjusted + "][valueexp_coef > " + cutoff_valueexp_coef + "]");
+	
+	//var collection = cy.elements("edge[valueN < " + cutoff_valueN + "][valuePrAdjusted = 0]");
+	cy.filter(function(i, element){
+  	if(element.isEdge()){
+  		if(element.data("valueN") < cutoff_valueN_min || element.data("valueN") > cutoff_valueN_max || element.data("valueexp_coef") < cutoff_valueexp_coef || element.data("valuePrAdjusted") > cutoff_valuePrAdjusted){
+  	  	element.hide();
+  		}
+  	}
+	});
+
+	//cy.remove( collection );
+	cy.resize();
+}
+
+function filterselect(){
+	var select_term = $( "#cutofftype option:selected" ).val();
+	console.log(select_term);
+	var inputval = parseFloat($("#input_select_val").val());
+	console.log(inputval);
+	var collection = null;
+	switch(select_term){
+		case "N":
+			collection = cy.elements('edge[valueN <= '+ inputval +"]");
+			break;
+		case "Pr":
+			collection = cy.elements("edge[valuePrAdjusted <= "+ inputval +"]");
+			break;
+		case "exp_coef":
+			collection = cy.elements("edge[valueexp_coef <= "+ inputval +"]");
+			break;
+	}
+	cy.remove(collection);
+}
+
+function changelayout(){
+	cy.reset();
+	var layout = $("#layout option:selected").val();
+	console.log(layout);
+	cy.layout({name: layout});
+}
+
+function changedim(){
+	var dim = $("#dim option:selected").val();
+	var res = dim.split("x");
+	console.log(res[0], res[1]);
+	$('#cy').css({'width': parseInt(res[0]), 'height': parseInt(res[1])});
+	cy.center();
+	//cy.reset();
+}
+</script>
+
+</head>
+<body>
+<div class="container" style="display:inline-block;">
+	<div class="row">
+		<div class="col-sm-3" style="overflow: auto">
+			<div class="text-center" style="padding: 10px; background-color: #008ae6; margin-left: -12px; margin-right: -12px;">
+				<img src='asset/images/logo2.png' style="height:20px" />
+			</div>
+			<div class="panel panel-info" style="margin-left: -12px; margin-right: -12px; margin-top: 2px">
+				<div class="panel-heading">Information</div>
+				<div class="panel-body">
+					<span id='showpvalue'>Click on the Node/Edge for additional information.</span>
+					<br>
+					<div id="imgdiv"></div>
+					<div id='imgurl'></div>
+				</div>
+			</div>
+			<div class="panel panel-info" style="margin-left: -12px; margin-right: -12px; margin-top: -16px">
+				<div class="panel-heading">Filter</div>
+				<div class="panel-body" style="font-size: small">
+					<strong>Sample size:</strong>
+					min: (<span id="valueN_min_val"></span>)
+					max: (<span id="valueN_max_val"></span>)
+					<!--
+					<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="100" data-slider-value="15000" />
+					-->
+					Range from:<input id='input_valueN_min' value=1000 style="width: 50px">
+					to:<input id='input_valueN_max' value=12000 style="width: 50px"><br>
+					<strong>Adjusted P-value (&lt;=):</strong><br>
+					<input id='input_valuePrAdjusted' value=0.00001 style="width: 50px"><br>
+					<strong>Exponentiated Coefficients (&gt;=):</strong><br>
+					<input id='input_valueexp_coef' value=1.5 style="width: 50px"><br>
+					<button onclick="filterthis()" class="btn btn-primary">filter</button>
+					<br>
+				</div>
+			</div>
+			<!-- 
+			<label>Cutoff</label>
+			<select id="cutofftype">
+				<option value="N">N value</option>
+				<option value="Pr">Pr value</option>
+				<option value="exp_coef">exp_coef value</option>
+			</select><br>
+			<input id='input_select_val' value=0><br>
+			<button onclick="filterselect()" >filter</button>
+			-->
+			<div class="panel panel-info" style="margin-left: -12px; margin-right: -12px; margin-top: -16px">
+				<div class="panel-heading">Shortest path</div>
+				<div class="panel-body" style="font-size: small">
+					<select id="fromnode" style="width:200px"></select>
+					<select id="tonode" style="width:200px"></select>
+					<button onclick="shortpath()" class="btn btn-primary">Find</button>
+					<br>
+					<span id="nonode"></span>
+				</div>
+			</div>
+			<div class="panel panel-info" style="margin-left: -12px; margin-right: -12px; margin-top: -16px">
+				<div class="panel-heading">Display</div>
+				<div class="panel-body" style="font-size: small">
+					<strong>Network</strong>:
+					<span><input type="checkbox" name="graph" checked="checked" value="display" onchange="showhidegraph(this)"/>Graph</span>
+					<span><input type="checkbox" name="table" checked="checked" value="hide" onchange="showhidetable(this)"/>Table</span>
+					<br>
+					<strong>Select layout</strong>
+					<select id="layout" onchange="changelayout()">
+						<option value="grid">grid</option>
+						<option value="preset">preset</option>
+						<option value="random">random</option>
+						<option value="circle">circle</option>
+						<option value="concentric">concentric</option>
+						<option value="breadthfirst">breadthfirst</option>
+						<option value="cose">cose</option>
+					</select>
+					<br>
+					<strong>Change dimensions</strong>
+					<select id="dim" onchange="changedim()">
+						<option value="800x600">800x600</option>
+						<option value="1000x800">1000x800</option>
+						<option value="1200x1000">1200x1000</option>
+						<option value="1400x1200">1400x1200</option>
+					</select>
+				</div>
+			</div>
+			<div class="panel panel-info" style="margin-left: -12px; margin-right: -12px; margin-top: -16px">
+				<div class="panel-heading">Download</div>
+				<div class="panel-body" style="font-size: small">
+					<a href="CoxPH.edge.csv" download="CoxPH.edge.csv">CoxPH Regression Adjacency Matrix</a><br>
+					<a href="RF.edge.csv" download="RF.edge.csv">Random Forest Results</a><br>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-8" style="margin-left: -12px;">
+			<div id="cy"></div><br>
+			<div><table id="nodetable" class="table table-striped table-responsive"><thead><tr><th>Condition</th><th>In-degree</th><th>Out-degree</th><th>Total degree</th></tr></thead></table></div>
+		</div>
+	</div>
+	<div class="row">
+	</div>
+</div>
+</body>
+
+</html>
