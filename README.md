@@ -385,6 +385,8 @@ cp /path/to/all_csv_files/outputs/* web_server
 * Dr. Xiang Gao, theoretical conception and algorithm development
 * Dr. Qunfeng Dong, algorithm development
 * Kashi Revanna, cytoscape visualization
+* Petar Bajic, manuscript drafting and revision
+* Michael Zhao, software testing
 * Ruichen Rong, algorithm development, program coding and testing
 
 ## Error report
