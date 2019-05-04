@@ -23,7 +23,7 @@ After you are done, use the following code to deactivate.
 $ conda deactivate
 ```
 
-If you are running this program on a Mac, more steps need to set up the right environment.
+NOTE: If you are running this program on a Mac, more steps are needed to set up the right environment.
 
 ## Citation
 
