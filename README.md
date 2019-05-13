@@ -40,55 +40,6 @@ $ cd DCN
 
 After the github repository is cloned, you will find a folder named DCN. All the scripts and example data files will be included in it. 
 
-## Quick start
-
-* This suite of analysis includes five major parts:
-
-1. Find all the exposed disease pairs; 
-2. Find all matched non-exposed disease pairs; 
-3. Perform Cox-PH regression on the two cohorts; 
-4. Perform Random Forest survival analysis on the two cohorts;
-5. Visualize the results
-
-
-* Step 1-2 is achieved by a0_generator.r, step 3-4 is achieved by a1_analyzer.r, and step 5 is achieved by a2_parse.py and index.html.
-
-### Required input files
-
-* Before running any analysis using this pipeline, please make sure you have an input EMR file formatted as tab delimited with 6 columns in the order of patient ID, disease ID/name, disease diagnose date ([%Y-%m-%d] or [%Y/%m/%d]), age, gender, race. No header is needed. It should be something like the following:
-
-```
-P00001  62      2012-01-16      66      F       White
-P00002  509     2009-01-12      68      M       African American
-P00002  23      2014-11-07      73      M       African American
-P00003  23      2015-07-20      78      M       White
-P00007  44      2014-04-28      51      M       White
-P00008  509     2010-07-12      54      M       White
-P00015  509     2008-04-21      60      M       White
-P00016  63      2008-03-16      83      F       White
-P00017  23      2014-11-13      48      F       White
-P00018  509     2011-07-03      76      M       African American
-P00018  14      2012-09-20      77      M       African American
-P00018  23      2014-01-09      79      M       African American
-P00019  23      2015-01-09      89      M       White
-P00020  14      2012-05-25      65      F       African American
-```
-
-* Meta file should be tab separated with header. The first column is the disease ID (should be consistant with the disease ID you have in the input data file), and second column is the disease name. Example of meta file:
-
-| id_col | name_long              |
-|--------|------------------------|
-| 14     | Prostate Cancer        |
-| 23     | Glaucoma               |
-| 29     | Obesity                |
-| 509    | Med:Progestins         |
-| 43     | Acute Myeloid Leukemia |
-| 44     | Vitiligo               |
-| 59     | Chalazion              |
-| 62     | Cirrhosis            |
-| 63     | Psoriasis              |
-| 67     | Sarcoidosis            |
-
 ### Test dataset
 
 * A test dataset with those two files are available in test.tar.gz file. Please unzip it to view and go through the tutorial. _Please note that the test dataset is simulated, thus its results are not a true reflection of scientific discovery_.
@@ -129,6 +80,54 @@ $ cp ./example/output/* web_server
 Then just click-open the index.html inside web_server, you will see the network display. You can compare your results under the `example` folder with files in `test` folder.
 
 **NOTE**: Files: `CoxPH.edge.csv`, `RF.edge.csv`, `all.edges.csv.js`, and all `PNG` files should be in the same folder as the `index.html`.
+
+## Quick start
+
+* This suite of analysis includes five major parts:
+
+1. Find all the exposed disease pairs; 
+2. Find all matched non-exposed disease pairs; 
+3. Perform Cox-PH regression on the two cohorts; 
+4. Perform Random Forest survival analysis on the two cohorts;
+5. Visualize the results
+
+* Step 1-2 is achieved by a0_generator.r, step 3-4 is achieved by a1_analyzer.r, and step 5 is achieved by a2_parse.py and index.html.
+
+### Required input files
+
+* Before running any analysis using this pipeline, please make sure you have an input EMR file formatted as tab delimited with 6 columns in the order of patient ID, disease ID/name, disease diagnose date ([%Y-%m-%d] or [%Y/%m/%d]), age, gender, race. No header is needed. It should be something like the following:
+
+```
+P00001  62      2012-01-16      66      F       White
+P00002  509     2009-01-12      68      M       African American
+P00002  23      2014-11-07      73      M       African American
+P00003  23      2015-07-20      78      M       White
+P00007  44      2014-04-28      51      M       White
+P00008  509     2010-07-12      54      M       White
+P00015  509     2008-04-21      60      M       White
+P00016  63      2008-03-16      83      F       White
+P00017  23      2014-11-13      48      F       White
+P00018  509     2011-07-03      76      M       African American
+P00018  14      2012-09-20      77      M       African American
+P00018  23      2014-01-09      79      M       African American
+P00019  23      2015-01-09      89      M       White
+P00020  14      2012-05-25      65      F       African American
+```
+
+* Meta file should be tab separated with header. The first column is the disease ID (should be consistant with the disease ID you have in the input data file), and second column is the disease name. Example of meta file:
+
+| id_col | name_long              |
+|--------|------------------------|
+| 14     | Prostate Cancer        |
+| 23     | Glaucoma               |
+| 29     | Obesity                |
+| 509    | Med:Progestins         |
+| 43     | Acute Myeloid Leukemia |
+| 44     | Vitiligo               |
+| 59     | Chalazion              |
+| 62     | Cirrhosis            |
+| 63     | Psoriasis              |
+| 67     | Sarcoidosis            |
 
 ## Getting started
 
