@@ -10,7 +10,7 @@ Disease Correlation Network (DCN) Analyser is a pipeline of disease correlation 
 
 ## Environment setup
 
-If you do not have the above environment, please set it up via the following <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/">conda</a> commands:
+If you do not have the above environment, please set it up via the following <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/" target="_blank">conda</a> commands:
 
 ```bash
 $ conda create --name DCN python=3.7 r=3.5 r-essentials
@@ -23,8 +23,6 @@ After you are done, use the following code to deactivate.
 $ conda deactivate
 ```
 
-NOTE: If you are running this program on a Mac, more steps are needed to set up the right environment.
-
 ## Citation
 
 In press. Will update when accepted.
@@ -35,7 +33,7 @@ Live interactive network display for the paper: <a href="http://cbi.lumc.edu/dis
 
 To check out the source code, go to https://github.com/qunfengdong/DCN. To obtain the scripts and example DCN files, do the following:
 
-```bash
+```
 $ git clone https://github.com/qunfengdong/DCN.git
 $ cd DCN
 ```
@@ -133,6 +131,8 @@ Then just click-open the index.html inside web_server, you will see the network 
 **NOTE**: Files: `CoxPH.edge.csv`, `RF.edge.csv`, `all.edges.csv.js`, and all `PNG` files should be in the same folder as the `index.html`.
 
 ## Getting started
+
+**NOTE**: You will need to enter your own file paths in the code below.
 
 ### Step 1: a0_generator.r
 Find all the exposed and matching non-exposed disease pairs. 
