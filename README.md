@@ -4,13 +4,13 @@ Disease Correlation Network (DCN) Analyser is a pipeline of disease correlation 
 
 ## Prerequisities
 
-* Linux
+* Linux or Mac OS
 * python >= 3.7.0
 * Rscript >= 3.5.0
 
 ## Environment setup
 
-If you do not have the above environment, please set it up via the following conda commands:
+If you do not have the above environment, please set it up via the following <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/">conda</a> commands:
 
 ```bash
 $ conda create --name DCN python=3.7 r=3.5 r-essentials
