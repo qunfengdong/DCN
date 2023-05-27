@@ -25,7 +25,7 @@ $ conda deactivate
 
 ## Citation
 
-In press. Will update when accepted.
+Lin H, Rong R, Gao X, Revanna K, Zhao M, Bajic P, Jin D, Hu C, Dong Q. Disease correlation network: a computational package for identifying temporal correlations between disease states from Large-Scale longitudinal medical records. JAMIA Open. 2019 Aug 23;2(3):353-359. doi: 10.1093/jamiaopen/ooz031. PMID: 31984368; PMCID: PMC6952009.
 
 Live interactive network display for the paper: <a href="http://cbi.lumc.edu/disease/" target="_blank">http://cbi.lumc.edu/disease/</a>.
 
@@ -390,7 +390,7 @@ cp /path/to/all_csv_files/outputs/* web_server
 
 ## Error report
 
-Please report any errors or bugs to hlin2@luc.edu.
+Please report any errors or bugs to qunfengd@gmail.com.
 
 ## License
 GNU
