@@ -392,5 +392,11 @@ cp /path/to/all_csv_files/outputs/* web_server
 
 Please report any errors or bugs to qunfengd@gmail.com.
 
+It seems that "randomForestSRC 3.2.2" may cause problems for the following step: 
+```bash
+Rscript a1_analyzer.r --method RF -m ./test/disease_code_test.tsv --inputfolder ./example --outputfolder ./example/output
+```
+Either try an older version of randomForestSRC, or just skip this step and analyze the results just based on the default Cox-PH regression.
+
 ## License
 GNU
